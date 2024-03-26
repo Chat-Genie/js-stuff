@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano Player</title>
+</head>
+<body>
+<button onclick="playSong()">Play Song</button>
+
+<script>
+function playSong() {
+    const context = new AudioContext();
+  // change the notes below depending on song
+    const notes = ['E', 'A', 'E', 'D', 'C', 'D', 'E', 'C', 'G', 'C'];
+    const noteDuration = 0.5; // Duration in seconds for each note
+    const noteDelay = 0.6; // Delay between notes
+
+    function playNote(note, startTime) {
+        const frequencies = {
+          // change frequencies depending on song
+            'C': 261.63,
+            'D': 293.66,
+            'E': 329.63,
+            'F': 349.23,
+            'G': 392.00,
+            'A': 440.00,
+            'B': 493.88
+        };
+
+        const oscillator = context.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(frequencies[note], startTime);
+        oscillator.connect(context.destination);
+        oscillator.start(startTime);
+        oscillator.stop(startTime + noteDuration);
+    }
+
+    let startTime = context.currentTime;
+    notes.forEach(note => {
+        playNote(note, startTime);
+        startTime += noteDelay;
+    });
+}
+</script>
+</body>
+</html>
